@@ -1,8 +1,8 @@
 const fs = require("fs");
 const readline = require("readline");
 
-module.exports = async function getEventUrls() {
-  let events = [];
+module.exports = async function getGroups() {
+  let groups = [];
   const fileStream = fs.createReadStream("NashTechEvents.csv");
 
   const rl = readline.createInterface({
@@ -14,8 +14,8 @@ module.exports = async function getEventUrls() {
     let nameAndUrlExtension = line.split(",");
     let name = nameAndUrlExtension[0];
     let url = "https://www.meetup.com" + nameAndUrlExtension[1];
-    events.push({ name: name, url: url });
+    groups.push({ name: name, url: url });
   }
 
-  return events;
+  return groups;
 };

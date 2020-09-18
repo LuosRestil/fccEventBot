@@ -1,9 +1,19 @@
 const fetch = require("node-fetch");
 const cheerio = require("cheerio");
 const getGroups = require("./getGroups");
+const mongoose = require("mongoose");
+const Event = require("./models/event");
 
-getUpcomingEvents().then((data) => {
-  for (let group of data) {
+async function dataScrape() {
+  let groupEvents = await getUpcomingEvents();
+  await mongoose.connect(process.env.ATLAS_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+  });
+
+  for (let group of groupEvents) {
     console.log("********************************************************");
     console.log(group.groupName);
     console.log("********************************************************");
@@ -15,17 +25,29 @@ getUpcomingEvents().then((data) => {
         day: "numeric",
       };
       console.log(
-        `\t${event.name}, ${event.time.toLocaleDateString(
+        `\t${event.name}, ${event.datetime.toLocaleDateString(
           undefined,
           options
-        )} ${event.time.toLocaleTimeString("en-US", {
+        )} ${event.datetime.toLocaleTimeString("en-US", {
           hour: "2-digit",
           minute: "2-digit",
         })}`
       );
+      let newEvent = new Event({
+        group: group.groupName,
+        name: event.name,
+        datetime: event.datetime,
+        link: event.link,
+      });
+      try {
+        await newEvent.save();
+      } catch (err) {
+        console.error(err);
+      }
     }
   }
-});
+  await mongoose.connection.close();
+}
 
 async function getUpcomingEvents() {
   let finalData = [];
@@ -64,10 +86,12 @@ async function fetchEventData(meetupGroupUrl) {
         return {
           name: $(link).text(),
           link: $(link).attr("href"),
-          time: datetime,
+          datetime: datetime,
         };
       });
       return upcomingEvents.filter((item) => item);
     });
   return data;
 }
+
+dataScrape();

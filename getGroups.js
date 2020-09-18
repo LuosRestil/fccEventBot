@@ -1,21 +1,19 @@
 const fs = require("fs");
 const readline = require("readline");
+const mongoose = require("mongoose");
+const Group = require("./models/group");
+require("dotenv").config();
+
+mongoose;
 
 module.exports = async function getGroups() {
-  let groups = [];
-  const fileStream = fs.createReadStream("NashTechEvents.csv");
-
-  const rl = readline.createInterface({
-    input: fileStream,
-    crlfDelay: Infinity,
+  await mongoose.connect(process.env.ATLAS_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
   });
-
-  for await (const line of rl) {
-    let nameAndUrlExtension = line.split(",");
-    let name = nameAndUrlExtension[0];
-    let url = "https://www.meetup.com" + nameAndUrlExtension[1];
-    groups.push({ name: name, url: url });
-  }
-
+  let groups = await Group.find({});
+  await mongoose.connection.close();
   return groups;
 };

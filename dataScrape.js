@@ -37,7 +37,7 @@ async function dataScrape() {
         group: group.groupName,
         name: event.name,
         datetime: event.datetime,
-        link: event.link,
+        link: "https://www.meetup.com" + event.link,
       });
       try {
         await newEvent.save();

@@ -1,7 +1,7 @@
 const fs = require("fs");
 const readline = require("readline");
 const mongoose = require("mongoose");
-const Group = require("./models/group");
+const MeetupGroup = require("./models/meetupGroup");
 require("dotenv").config();
 
 mongoose;
@@ -13,7 +13,7 @@ module.exports = async function getGroups() {
     useCreateIndex: true,
     useFindAndModify: false,
   });
-  let groups = await Group.find({});
+  let groups = await MeetupGroup.find({});
   await mongoose.connection.close();
   return groups;
 };

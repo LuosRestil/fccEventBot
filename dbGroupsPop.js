@@ -1,7 +1,7 @@
 const fs = require("fs");
 const readline = require("readline");
 const mongoose = require("mongoose");
-const Group = require("./models/group");
+const MeetupGroup = require("./models/meetupGroup");
 require("dotenv").config();
 
 async function populateDbFromGroups() {
@@ -19,7 +19,7 @@ async function populateDbFromGroups() {
 
 async function addGroupsToDb(groups) {
   for (let group of groups) {
-    const newGroup = new Group({
+    const newGroup = new MeetupGroup({
       name: group.name,
       url: group.url,
     });

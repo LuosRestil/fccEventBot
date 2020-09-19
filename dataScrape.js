@@ -7,12 +7,12 @@ const Event = require("./models/event");
 module.exports = async function dataScrape() {
   console.log("Starting data scrape...");
   let groupEvents = await getUpcomingEvents();
-  // await mongoose.connect(process.env.ATLAS_URI, {
-  //   useNewUrlParser: true,
-  //   useUnifiedTopology: true,
-  //   useCreateIndex: true,
-  //   useFindAndModify: false,
-  // });
+  await mongoose.connect(process.env.ATLAS_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+  });
   console.log(`${groupEvents.length} events found.`);
   for (let group of groupEvents) {
     console.log("********************************************************");
@@ -41,13 +41,16 @@ module.exports = async function dataScrape() {
         link: "https://www.meetup.com" + event.link,
       });
       try {
+        console.log("Attempting to save event...");
         await newEvent.save();
+        console.log("Event saved.");
       } catch (err) {
+        console.log("Duplicate event.");
         // console.error(err);
       }
     }
   }
-  // await mongoose.connection.close();
+  await mongoose.connection.close();
 };
 
 async function getUpcomingEvents() {

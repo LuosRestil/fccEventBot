@@ -5,7 +5,7 @@ const MeetupGroup = require("../models/meetupGroup");
 module.exports = async function addMeetup(message, args) {
   if (args.length !== 1) {
     message.channel.send(
-      'Sorry, I don\'t understand that. Requests should be made in the form of:\n"!events add-meetup https://www.meetup.com/groupname/"'
+      "Sorry, I don't understand that. Requests should be made in the form of:\n`!events add-meetup https://www.meetup.com/groupname/`"
     );
   } else {
     // validate url
@@ -13,7 +13,7 @@ module.exports = async function addMeetup(message, args) {
     let re = /^https:\/\/www.meetup.com\/[^\/]+\/$/;
     if (!re.test(url)) {
       message.channel.send(
-        'Sorry, that URL doesn\'t look valid. Requests should be made in the form of:\n"!events add-meetup https://www.meetup.com/groupname/"'
+        "Sorry, that URL doesn't look valid. Requests should be made in the form of:\n`!events add-meetup https://www.meetup.com/groupname/`"
       );
     } else {
       // url valid, check that it's a real group

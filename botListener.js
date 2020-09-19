@@ -49,7 +49,7 @@ client.on("message", (message) => {
         break;
       default:
         message.channel.send(
-          "Sorry, I don't understand that command. Try \"!event help\" to see what I'm able to do."
+          "Sorry, I don't understand that command. Try `!event help` to see what I'm able to do."
         );
     }
   }

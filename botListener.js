@@ -5,12 +5,12 @@ const client = new Discord.Client();
 const mongoose = require("mongoose");
 const Event = require("./models/event");
 const MeetupGroup = require("./models/meetupGroup");
-// const addEvent = require("./commands/addEvent");
+const addEvent = require("./commands/addEvent");
 const addMeetup = require("./commands/addMeetup");
 const getTodayEvents = require("./commands/getTodayEvents");
 const getTomorrowEvents = require("./commands/getTomorrowEvents");
 const getWeekEvents = require("./commands/getWeekEvents");
-// const help = require("./commands/help");
+const help = require("./commands/help");
 
 client.once("ready", () => {
   console.info(`Logged in as ${client.user.tag}!`);
@@ -54,13 +54,5 @@ client.on("message", (message) => {
     }
   }
 });
-
-function help(message) {
-  message.channel.send("help");
-}
-
-function addEvent(message, args) {
-  message.channel.send("addEvent");
-}
 
 client.login(process.env.TOKEN);

@@ -4,15 +4,16 @@ const getGroups = require("./getGroups");
 const mongoose = require("mongoose");
 const Event = require("./models/event");
 
-async function dataScrape() {
+module.exports = async function dataScrape() {
+  console.log("Starting data scrape...");
   let groupEvents = await getUpcomingEvents();
-  await mongoose.connect(process.env.ATLAS_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-  });
-
+  // await mongoose.connect(process.env.ATLAS_URI, {
+  //   useNewUrlParser: true,
+  //   useUnifiedTopology: true,
+  //   useCreateIndex: true,
+  //   useFindAndModify: false,
+  // });
+  console.log(`${groupEvents.length} events found.`);
   for (let group of groupEvents) {
     console.log("********************************************************");
     console.log(group.groupName);
@@ -42,12 +43,12 @@ async function dataScrape() {
       try {
         await newEvent.save();
       } catch (err) {
-        console.error(err);
+        // console.error(err);
       }
     }
   }
-  await mongoose.connection.close();
-}
+  // await mongoose.connection.close();
+};
 
 async function getUpcomingEvents() {
   let finalData = [];
@@ -94,4 +95,4 @@ async function fetchEventData(meetupGroupUrl) {
   return data;
 }
 
-dataScrape();
+// dataScrape();

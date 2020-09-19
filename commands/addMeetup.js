@@ -38,7 +38,7 @@ module.exports = async function addMeetup(message, args) {
           message.channel.send(
             "Looks like that group has already been added. If you're 100% sure this is a new group, I may have some wires crossed, and you should message an admin."
           );
-          console.error(err);
+          // console.error(err);
         }
       } else {
         message.channel.send(

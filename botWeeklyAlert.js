@@ -1,7 +1,7 @@
 const Event = require("./models/event");
 const Discord = require("discord.js");
 const client = new Discord.Client();
-const { eventsChannelId } = require("./config.json");
+const { eventsChannelId, generalChannelId } = require("./config.json");
 const mongoose = require("mongoose");
 require("dotenv").config();
 
@@ -19,7 +19,7 @@ module.exports = async function botWeeklyAlert() {
     useFindAndModify: false,
   });
   Event.find({ datetime: { $lt: oneWeekFromNow } }, async (err, events) => {
-    console.log("Event search complete");
+    // console.log("Event search complete");
     if (err) {
       console.error(err);
       // log error, send me an email, something
@@ -29,7 +29,7 @@ module.exports = async function botWeeklyAlert() {
         return;
       } else {
         let messageString =
-          "**Check out these events happening this week!**\n\n";
+          "***Check out these events happening this week!***\n\n";
         const options = {
           weekday: "long",
           year: "numeric",
@@ -38,18 +38,20 @@ module.exports = async function botWeeklyAlert() {
         };
         for (let event of events) {
           let datetime = new Date(event.datetime);
-          let eventString = `${event.group}:\n\t${
+          let eventString = `**${event.group}:**\n\t*${
             event.name
-          }\n\t${datetime.toLocaleDateString(
+          }*\n\t${datetime.toLocaleDateString(
             undefined,
             options
           )} ${datetime.toLocaleTimeString("en-US", {
             hour: "2-digit",
             minute: "2-digit",
-          })}\n\t${event.link}\n\n`;
+          })}\n\t<${event.link}>\n\n`;
           if (messageString.length + eventString.length > 2000) {
-            messageString += "And more...";
-            break;
+            await client.channels.cache
+              .get(generalChannelId)
+              .send(messageString);
+            messageString = eventString;
           } else {
             messageString += eventString;
           }

@@ -1,7 +1,7 @@
 const Event = require("./models/event");
 const Discord = require("discord.js");
 const client = new Discord.Client();
-const { eventsChannelId } = require("./config.json");
+const { eventsChannelId, generalChannelId } = require("./config.json");
 const mongoose = require("mongoose");
 require("dotenv").config();
 
@@ -23,16 +23,18 @@ module.exports = async function botDailyAlert() {
     useFindAndModify: false,
   });
   Event.find({ datetime: { $lt: endOfToday } }, async (err, events) => {
-    console.log("Event search complete.");
+    // console.log("Event search complete.");
     if (err) {
       console.log(err);
       // log error, send me an email, something
     } else if (events) {
       events = events.sort((a, b) => a.datetime - b.datetime);
       if (events.length === 0) {
+        client.destroy();
+        await mongoose.connection.close();
         return;
       } else {
-        let messageString = "**Check out these events happening today!**\n\n";
+        let messageString = "***Check out these events happening today!***\n\n";
         const options = {
           weekday: "long",
           year: "numeric",
@@ -41,9 +43,9 @@ module.exports = async function botDailyAlert() {
         };
         for (let event of events) {
           let datetime = new Date(event.datetime);
-          let eventString = `${event.group}:\n\t${
+          let eventString = `**${event.group}:**\n\t*${
             event.name
-          }\n\t${datetime.toLocaleDateString(
+          }*\n\t${datetime.toLocaleDateString(
             undefined,
             options
           )} ${datetime.toLocaleTimeString("en-US", {
@@ -51,8 +53,10 @@ module.exports = async function botDailyAlert() {
             minute: "2-digit",
           })}\n\t${event.link}\n\n`;
           if (messageString.length + eventString.length > 2000) {
-            messageString += "And more...";
-            break;
+            await client.channels.cache
+              .get(eventsChannelId)
+              .send(messageString);
+            messageString = eventString;
           } else {
             messageString += eventString;
           }

@@ -13,7 +13,7 @@ const getWeekEvents = require("./commands/getWeekEvents");
 const help = require("./commands/help");
 
 client.once("ready", () => {
-  console.info(`Logged in as ${client.user.tag}!`);
+  // console.info(`Logged in as ${client.user.tag}!`);
   mongoose.connect(process.env.ATLAS_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,

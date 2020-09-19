@@ -9,9 +9,9 @@ module.exports = async function removeOldEvents() {
     useFindAndModify: false,
   });
 
-  console.log("Removing old events...");
+  // console.log("Removing old events...");
   let now = new Date().getTime();
   await Event.deleteMany({ datetime: { $lt: now } });
-  console.log("Old events removed.");
+  // console.log("Old events removed.");
   await mongoose.connection.close();
 };

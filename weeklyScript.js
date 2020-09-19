@@ -15,7 +15,7 @@ async function weeklyScript() {
   await botWeeklyAlert();
   // await mongoose.connection.close();
   // console.log("Mongoose connection closed.");
-  console.log("Weekly script complete.");
+  // console.log("Weekly script complete.");
 }
 
 weeklyScript();

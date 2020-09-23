@@ -32,7 +32,7 @@ async function addEvent() {
 
   try {
     await newEvent.save();
-    console.log("Event saved");
+    console.log("Event saved!");
     await mongoose.connection.close();
   } catch (err) {
     console.log(err);

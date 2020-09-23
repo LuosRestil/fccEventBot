@@ -1,6 +1,6 @@
 require("dotenv").config();
 const Discord = require("discord.js");
-const { command, generalChannelId } = require("./config.json");
+const { command, generalChannelId, admins } = require("./config.json");
 const client = new Discord.Client();
 const mongoose = require("mongoose");
 const Event = require("./models/event");
@@ -11,6 +11,7 @@ const getTodayEvents = require("./commands/getTodayEvents");
 const getTomorrowEvents = require("./commands/getTomorrowEvents");
 const getWeekEvents = require("./commands/getWeekEvents");
 const help = require("./commands/help");
+const removeEvent = require("./commands/removeEvent");
 
 client.once("ready", () => {
   // console.info(`Logged in as ${client.user.tag}!`);
@@ -47,6 +48,16 @@ client.on("message", (message) => {
       case "add-meetup":
         addMeetup(message, args.slice(1));
         break;
+      // case "add-event":
+      //   if (admins.includes(message.author.id)) {
+      //     addEvent(message.args.slice(1));
+      //   }
+      //   break;
+      // case "remove-event":
+      //   if (admins.includes(message.author.id)) {
+      //     removeEvent(message.args.slice(1));
+      //   }
+      //   break;
       default:
         message.channel.send(
           "Sorry, I don't understand that command. Try `!event help` to see what I'm able to do."

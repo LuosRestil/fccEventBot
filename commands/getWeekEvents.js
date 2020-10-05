@@ -5,7 +5,7 @@ const MILLISECONDS_IN_ONE_WEEK = 604800000;
 module.exports = async function getWeekEvents(message) {
   let oneWeekFromNow = new Date().getTime() + MILLISECONDS_IN_ONE_WEEK;
 
-  Event.find({ datetime: { $lt: oneWeekFromNow } }, (err, events) => {
+  Event.find({ datetime: { $lt: oneWeekFromNow } }, async (err, events) => {
     if (err) {
       message.channel.send(
         "Sorry, something's wrong with my circuits right now..."

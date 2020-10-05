@@ -27,15 +27,15 @@ module.exports = async function getWeekEvents(message) {
         };
         for (let event of events) {
           let datetime = new Date(event.datetime);
-          let eventString = `${event.group}:\n\t${
+          let eventString = `**${event.group}:**\n\t*${
             event.name
-          }\n\t${datetime.toLocaleDateString(
+          }*\n\t${datetime.toLocaleDateString(
             undefined,
             options
           )} ${datetime.toLocaleTimeString("en-US", {
             hour: "2-digit",
             minute: "2-digit",
-          })}\n\t${event.link}\n\n`;
+          })}\n\t<${event.link}>\n\n`;
           if (messageString.length + eventString.length > 2000) {
             await message.channel.send(messageString);
             messageString = eventString;

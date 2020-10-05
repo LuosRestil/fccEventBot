@@ -37,8 +37,8 @@ module.exports = async function getWeekEvents(message) {
             minute: "2-digit",
           })}\n\t${event.link}\n\n`;
           if (messageString.length + eventString.length > 2000) {
-            messageString += "And more...";
-            break;
+            await message.channel.send(messageString);
+            messageString = eventString;
           } else {
             messageString += eventString;
           }

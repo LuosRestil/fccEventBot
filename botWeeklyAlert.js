@@ -49,7 +49,7 @@ module.exports = async function botWeeklyAlert() {
           })}\n\t<${event.link}>\n\n`;
           if (messageString.length + eventString.length > 2000) {
             await client.channels.cache
-              .get(generalChannelId)
+              .get(eventsChannelId)
               .send(messageString);
             messageString = eventString;
           } else {

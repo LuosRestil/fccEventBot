@@ -10,7 +10,7 @@ module.exports = function getTodayEvents(message) {
     59
   ).getTime();
 
-  Event.find({ datetime: { $lt: endOfToday } }, (err, events) => {
+  Event.find({ datetime: { $lt: endOfToday } }, async (err, events) => {
     if (err) {
       console.log(err);
       message.channel.send(

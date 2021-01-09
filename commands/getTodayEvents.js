@@ -16,7 +16,7 @@ module.exports = function getTodayEvents(message) {
       message.channel.send(
         "Sorry, something's wrong with my circuits right now..."
       );
-      // log error, send me an email, something
+      // TODO log error, send me an email, something
     } else if (events) {
       events = events.sort((a, b) => a.datetime - b.datetime);
       if (events.length === 0) {
